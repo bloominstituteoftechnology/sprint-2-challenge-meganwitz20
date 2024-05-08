@@ -6,27 +6,79 @@
   <script id="challenge">
     // 👉 CHALLENGE 1
     function profileActivation(profile, reason) {
-
+      if (profile.active) {
+        if (reason === undefined) {
+          return "confirm status manually";
+        } else {
+          profile.active = false;
+          profile.reason = reason;
+        }
+      } else {
+        profile.active = true;
+        delete profile.reason;
+      }
+      return profile;
     }
 
     // 👉 CHALLENGE 2
-    function mineSweeper(grid, x, y) {
+          function mineSweeper(grid, x, y) {
+    // Check for invalid coordinates
+    if (x < 1 || x > 3 || y < 1 || y > 3) {
+        return "invalid coordinates";
+      }
 
+      // Get the value at the specified coordinates
+      let cellValue = grid[y - 1][x - 1];
+
+      // Determine the result based on the cell value
+      if (cellValue === "🟥") {
+        return "🟥 💀";
+      } else if (cellValue === "🟦") {
+        return "🟦 🥳";
+      } else {
+        return "unknown cell value";
+      }
+     
     }
+    
 
     // 👉 CHALLENGE 3
     function booleanize(obj) {
+      const newObj = {};
 
+      for (const prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          const newProp = prop.length > 9 ? prop.slice(0, 9) : prop;
+
+
+          if (obj[prop] !== null) {
+
+            newObj[newProp] = typeof obj[prop] === 'string' ? obj[prop] : !!obj[prop];
+          }
+        }
+      }
+
+      if (Object.keys(newObj).length === 0) return {};
+
+      if (Object.keys(obj).some(prop => prop.length > 9)) {
+        return 'shorten all prop names to 9 chars or less';
+      }
+
+      return newObj;
     }
 
     // 👉 CHALLENGE 4
     function scrub(text, forbidden) {
-
+      if (!forbidden || !forbidden.length) return text;
+      return text.replace(new RegExp(forbidden.join('|'), 'gi'), match => 'x'.repeat(match.length));
     }
+
 
     // 👉 CHALLENGE 5 (bonus, NOT graded)
     function normalizePhoneNumber(num) {
-
+      const numsOnly = num.replace(/\D/g, '');
+      const formatted = numsOnly.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+      return formatted;
     }
 
     // 👉 CHALLENGE 6 (bonus, NOT graded)
